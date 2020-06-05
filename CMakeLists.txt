@@ -25,15 +25,17 @@ list(REMOVE_ITEM PCL_LIBRARIES "vtkproj4")
 
 set(
     giPrjSrc
-    src/ukf.cpp
-    src/main.cpp
-    src/tools.cpp
-    src/render/render.cpp
+    src/ukf.cc
+    src/main.cc
+    src/tools.cc
+    src/highway.cc
+    src/render/render.cc
 )
 
 set(
     giPrjLib
     libglog.a
+    libgflags.a
     ${PCL_LIBRARIES}
 )
 
