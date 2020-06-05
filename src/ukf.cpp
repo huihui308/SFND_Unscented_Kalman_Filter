@@ -1,9 +1,22 @@
+/**********************************************************
+ *  File Name:  ukf.cpp
+ *  Author:     huangdawei
+ *  Mail:       305573571@qq.com
+ *  Time:       2019-04-19
+ *  Abstract:   1. .
+ *
+ **********************************************************/
 #include "ukf.h"
-#include "Eigen/Dense"
 #include "iostream"
+#include "Eigen/Dense"
+#include "glog/logging.h"
+
+
 using namespace std;
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
+
+
 
 /**
  * Initializes Unscented Kalman filter
@@ -146,7 +159,7 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
 
         time_us_ = meas_package.timestamp_;
         is_initialized_ = true;
-        std::cout << "Initialization finished" << std::endl;
+        LOG(INFO) << "Initialization finished" << std::endl;
         return;
     }
 
@@ -157,14 +170,14 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
 
     // predict step
     Prediction(dt);
-    std::cout << "Prediction finished" << std::endl;
+    LOG(INFO) << "Prediction finished" << std::endl;
     // update step
     if (meas_package.sensor_type_ == MeasurementPackage::RADAR && use_radar_) {
-        std::cout << "Update Radar" << std::endl;
+        LOG(INFO) << "Update Radar" << std::endl;
         UpdateRadar(meas_package);
 
     } else if (meas_package.sensor_type_ == MeasurementPackage::LASER && use_laser_) {
-        std::cout << "Update Lidar" << std::endl;
+        LOG(INFO) << "Update Lidar" << std::endl;
         UpdateLidar(meas_package);
     }
 
@@ -176,7 +189,7 @@ void UKF::Prediction(double delta_t) {
    * Modify the state vector, x_. Predict sigma points, the state, 
    * and the state covariance matrix.
    */
-//    std::cout << "Prediction START" << std::endl;
+//    LOG(INFO) << "Prediction START" << std::endl;
     // create augmented mean vector
     VectorXd x_aug = VectorXd(n_aug_);
     // create augmented state covariance

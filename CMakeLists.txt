@@ -1,6 +1,14 @@
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
+set( prjName ukf_highway )
 
 add_definitions(-std=c++11)
+
+
+###### change the default location of executables
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+
 
 set(CXX_FLAGS "-Wall")
 set(CMAKE_CXX_FLAGS, "${CXX_FLAGS}")
@@ -15,9 +23,22 @@ add_definitions(${PCL_DEFINITIONS})
 list(REMOVE_ITEM PCL_LIBRARIES "vtkproj4")
 
 
-add_executable (ukf_highway src/main.cpp src/ukf.cpp src/tools.cpp src/render/render.cpp)
-target_link_libraries (ukf_highway ${PCL_LIBRARIES})
+set(
+    giPrjSrc
+    src/ukf.cpp
+    src/main.cpp
+    src/tools.cpp
+    src/render/render.cpp
+)
+
+set(
+    giPrjLib
+    libglog.a
+    ${PCL_LIBRARIES}
+)
 
 
+add_executable( ${prjName} ${giPrjSrc} )
+target_link_libraries( ${prjName} ${giPrjLib} )
 
 
