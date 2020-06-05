@@ -1,5 +1,5 @@
 /**********************************************************
- *  File Name:  highway.cpp
+ *  File Name:  highway.cc
  *  Author:     david
  *  Mail:       305573571@qq.com
  *  Time:       2019-04-19
@@ -13,8 +13,8 @@ Highway::Highway(pcl::visualization::PCLVisualizer::Ptr& viewer)
 {
     tools = Tools();
     egoCar = Car(Vect3(0, 0, 0), Vect3(4, 2, 2), Color(0, 1, 0), 0, 0, 2, "egoCar");
-    Car car1(Vect3(-10, 4, 0), Vect3(4, 2, 2), Color(0, 0, 1), 5, 0, 2, "car1");
 
+    Car car1(Vect3(-10, 4, 0), Vect3(4, 2, 2), Color(0, 0, 1), 5, 0, 2, "car1");
     std::vector<accuation> car1_instructions;
     accuation a = accuation(0.5*1e6, 0.5, 0.0);
     car1_instructions.push_back(a);
@@ -24,7 +24,6 @@ Highway::Highway(pcl::visualization::PCLVisualizer::Ptr& viewer)
     car1_instructions.push_back(a);
     a = accuation(4.4*1e6, -2.0, 0.0);
     car1_instructions.push_back(a);
-
     car1.setInstructions(car1_instructions);
     if( trackCars[0] ) {
         UKF ukf1;
@@ -69,7 +68,6 @@ Highway::Highway(pcl::visualization::PCLVisualizer::Ptr& viewer)
     traffic.push_back(car3);
 
     lidar = new Lidar(traffic,0);
-
     // render environment
     renderHighway(0,viewer);
     egoCar.render(viewer);
@@ -77,7 +75,6 @@ Highway::Highway(pcl::visualization::PCLVisualizer::Ptr& viewer)
     car2.render(viewer);
     car3.render(viewer);
 }
-
 
 
 void Highway::stepHighway(double egoVelocity, long long timestamp, int frame_per_sec, pcl::visualization::PCLVisualizer::Ptr& viewer)
@@ -144,22 +141,15 @@ void Highway::stepHighway(double egoVelocity, long long timestamp, int frame_per
         if (rmseFailLog[1] > 0) {
             viewer->addText(" Y: "+std::to_string(rmseFailLog[1]), 30, 100, 20, 1, 0, 0, "rmse_fail_y");
         }
-        if(rmseFailLog[2] > 0) {
+        if (rmseFailLog[2] > 0) {
             viewer->addText("Vx: "+std::to_string(rmseFailLog[2]), 30, 75, 20, 1, 0, 0, "rmse_fail_vx");
         }
-        if(rmseFailLog[3] > 0) {
+        if (rmseFailLog[3] > 0) {
             viewer->addText("Vy: "+std::to_string(rmseFailLog[3]), 30, 50, 20, 1, 0, 0, "rmse_fail_vy");
         }
     }
+
+    return;
 }
-
-
-
-
-
-
-
-
-
 
 
