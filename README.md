@@ -11,7 +11,7 @@ The main program can be built and ran by doing the following from the project to
 2. cd build
 3. cmake ..
 4. make
-5. ./ukf_highway
+5. ./bin/ukf_highway
 
 Note that the programs that need to be written to accomplish the project are src/ukf.cpp, and src/ukf.h
 
@@ -26,7 +26,7 @@ it's own UKF object generated for it, and will update each indidual one during e
 
 The red spheres above cars represent the (x,y) lidar detection and the purple lines show the radar measurements with the velocity magnitude along the detected angle. The Z axis is not taken into account for tracking, so you are only tracking along the X/Y axis.
 
----
+
 
 ## Other Important Dependencies
 * cmake >= 3.5
