@@ -40,6 +40,13 @@ The red spheres above cars represent the (x,y) lidar detection and the purple li
   * Mac: same deal as make - [install Xcode command line tools](https://developer.apple.com/xcode/features/)
   * Windows: recommend using [MinGW](http://www.mingw.org/)
  * PCL 1.2
+* glog
+  * git clone https://github.com/google/glog
+  * sudo apt-get install autoconf automake libtool
+  * ./autogen.sh
+  * ./configure
+  * make -j 24
+  * sudo make install
 
 ## Basic Build Instructions
 
