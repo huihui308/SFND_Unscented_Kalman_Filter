@@ -77,11 +77,15 @@ Highway::Highway(pcl::visualization::PCLVisualizer::Ptr& viewer)
 }
 
 
-void Highway::stepHighway(double egoVelocity, long long timestamp, int frame_per_sec, pcl::visualization::PCLVisualizer::Ptr& viewer)
+void Highway::stepHighway(
+    double egoVelocity,
+    long long timestamp,
+    int frame_per_sec,
+    pcl::visualization::PCLVisualizer::Ptr& viewer)
 {
-    if( visualize_pcd ) {
-        pcl::PointCloud<pcl::PointXYZ>::Ptr trafficCloud = tools.loadPcd("../src/sensors/data/pcd/highway_"+std::to_string(timestamp)+".pcd");
-        renderPointCloud(viewer, trafficCloud, "trafficCloud", Color((float)184/256,(float)223/256,(float)252/256));
+    if ( visualize_pcd ) {
+        pcl::PointCloud<pcl::PointXYZ>::Ptr trafficCloud = tools.loadPcd("../src/sensors/data/pcd/highway_" + std::to_string(timestamp) + ".pcd");
+        renderPointCloud(viewer, trafficCloud, "trafficCloud", Color((float)184/256, (float)223/256, (float)252/256));
     }
     // render highway environment with poles
     renderHighway(egoVelocity*timestamp/1e6, viewer);
@@ -89,8 +93,9 @@ void Highway::stepHighway(double egoVelocity, long long timestamp, int frame_per
 
     for (int i = 0; i < traffic.size(); i++) {
         traffic[i].move((double)1/frame_per_sec, timestamp);
-        if(!visualize_pcd)
-        traffic[i].render(viewer);
+        if( !visualize_pcd ) {
+            traffic[i].render(viewer);
+        }
         // Sense surrounding cars with lidar and radar
         if( trackCars[i] ) {
             VectorXd gt(4);
@@ -98,9 +103,9 @@ void Highway::stepHighway(double egoVelocity, long long timestamp, int frame_per
             tools.ground_truth.push_back(gt);
             tools.lidarSense(traffic[i], viewer, timestamp, visualize_lidar);
             tools.radarSense(traffic[i], egoCar, viewer, timestamp, visualize_radar);
-            tools.ukfResults(traffic[i],viewer, projectedTime, projectedSteps);
+            tools.ukfResults(traffic[i], viewer, projectedTime, projectedSteps);
             VectorXd estimate(4);
-            double v  = traffic[i].ukf.x_(2);
+            double v = traffic[i].ukf.x_(2);
             double yaw = traffic[i].ukf.x_(3);
             double v1 = cos(yaw)*v;
             double v2 = sin(yaw)*v;
@@ -115,7 +120,7 @@ void Highway::stepHighway(double egoVelocity, long long timestamp, int frame_per
     viewer->addText("Vx: " +std::to_string(rmse[2]), 30, 225, 20, 1, 1, 1, "rmse_vx");
     viewer->addText("Vy: " +std::to_string(rmse[3]), 30, 200, 20, 1, 1, 1, "rmse_vy");
 
-    if(timestamp > 1.0e6) {
+    if (timestamp > 1.0e6) {
         if(rmse[0] > rmseThreshold[0]) {
             rmseFailLog[0] = rmse[0];
             pass = false;
@@ -133,19 +138,19 @@ void Highway::stepHighway(double egoVelocity, long long timestamp, int frame_per
             pass = false;
         }
     }
-    if( !pass ) {
+    if ( !pass ) {
         viewer->addText("RMSE Failed Threshold", 30, 150, 20, 1, 0, 0, "rmse_fail");
         if (rmseFailLog[0] > 0) {
-            viewer->addText(" X: "+std::to_string(rmseFailLog[0]), 30, 125, 20, 1, 0, 0, "rmse_fail_x");
+            viewer->addText(" X: " + std::to_string(rmseFailLog[0]), 30, 125, 20, 1, 0, 0, "rmse_fail_x");
         }
         if (rmseFailLog[1] > 0) {
-            viewer->addText(" Y: "+std::to_string(rmseFailLog[1]), 30, 100, 20, 1, 0, 0, "rmse_fail_y");
+            viewer->addText(" Y: " + std::to_string(rmseFailLog[1]), 30, 100, 20, 1, 0, 0, "rmse_fail_y");
         }
         if (rmseFailLog[2] > 0) {
-            viewer->addText("Vx: "+std::to_string(rmseFailLog[2]), 30, 75, 20, 1, 0, 0, "rmse_fail_vx");
+            viewer->addText("Vx: " + std::to_string(rmseFailLog[2]), 30, 75, 20, 1, 0, 0, "rmse_fail_vx");
         }
         if (rmseFailLog[3] > 0) {
-            viewer->addText("Vy: "+std::to_string(rmseFailLog[3]), 30, 50, 20, 1, 0, 0, "rmse_fail_vy");
+            viewer->addText("Vy: " + std::to_string(rmseFailLog[3]), 30, 50, 20, 1, 0, 0, "rmse_fail_vy");
         }
     }
 

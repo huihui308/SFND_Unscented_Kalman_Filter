@@ -84,7 +84,7 @@ void Car::setUKF(UKF tracker)
 void Car::move(float dt, int time_us)
 {
     if ((instructions.size() > 0) && (accuateIndex < ((int)instructions.size() - 1))) {
-        if(time_us >= instructions[accuateIndex + 1].time_us) {
+        if (time_us >= instructions[accuateIndex + 1].time_us) {
             setAcceleration(instructions[accuateIndex + 1].acceleration);
             setSteering(instructions[accuateIndex + 1].steering);
             accuateIndex++;
