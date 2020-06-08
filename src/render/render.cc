@@ -125,10 +125,8 @@ bool Car::checkCollision(Vect3 point)
 void renderHighway(double distancePos, pcl::visualization::PCLVisualizer::Ptr& viewer)
 {
     // units in meters
-    double roadLengthAhead = 50.0;
-    double roadLengthBehind = -15.0;
-    double roadWidth = 12.0;
-    double roadHeight = 0.2; 
+    double roadWidth = 12.0, roadHeight = 0.2;
+    double roadLengthAhead = 50.0, roadLengthBehind = -15.0;
 
     viewer->addCube(roadLengthBehind, roadLengthAhead, -roadWidth / 2, roadWidth / 2, -roadHeight, 0, .2, .2, .2, "highwayPavement");
     viewer->setShapeRenderingProperties(pcl::visualization::PCL_VISUALIZER_REPRESENTATION, pcl::visualization::PCL_VISUALIZER_REPRESENTATION_SURFACE, "highwayPavement");
@@ -146,8 +144,9 @@ void renderHighway(double distancePos, pcl::visualization::PCLVisualizer::Ptr& v
 
     //double distancePos = 7;
     double markerPos = (roadLengthBehind/poleSpace)*poleSpace-distancePos;
-    while(markerPos < roadLengthBehind)
-    markerPos+=poleSpace;
+    while(markerPos < roadLengthBehind) {
+        markerPos += poleSpace;
+    }
     int poleIndex = 0;
     while(markerPos <= roadLengthAhead) {
         // left pole
@@ -155,14 +154,13 @@ void renderHighway(double distancePos, pcl::visualization::PCLVisualizer::Ptr& v
         viewer->setShapeRenderingProperties(pcl::visualization::PCL_VISUALIZER_REPRESENTATION, pcl::visualization::PCL_VISUALIZER_REPRESENTATION_SURFACE, "pole_"+std::to_string(poleIndex)+"l");
         viewer->addCube(-poleWidth/2+markerPos, poleWidth/2+markerPos, -poleWidth/2+roadWidth/2+poleCurve, poleWidth/2+roadWidth/2+poleCurve, 0, poleHeight, 0, 0, 0, "pole_"+std::to_string(poleIndex)+"lframe");
         viewer->setShapeRenderingProperties(pcl::visualization::PCL_VISUALIZER_REPRESENTATION, pcl::visualization::PCL_VISUALIZER_REPRESENTATION_WIREFRAME, "pole_"+std::to_string(poleIndex)+"lframe");
-
         // right pole
         viewer->addCube(-poleWidth/2+markerPos, poleWidth/2+markerPos, -poleWidth/2-roadWidth/2-poleCurve, poleWidth/2-roadWidth/2-poleCurve, 0, poleHeight, 1, 0.5, 0, "pole_"+std::to_string(poleIndex)+"r");
         viewer->setShapeRenderingProperties(pcl::visualization::PCL_VISUALIZER_REPRESENTATION, pcl::visualization::PCL_VISUALIZER_REPRESENTATION_SURFACE, "pole_"+std::to_string(poleIndex)+"r");
         viewer->addCube(-poleWidth/2+markerPos, poleWidth/2+markerPos, -poleWidth/2-roadWidth/2-poleCurve, poleWidth/2-roadWidth/2-poleCurve, 0, poleHeight, 0, 0, 0, "pole_"+std::to_string(poleIndex)+"rframe");
         viewer->setShapeRenderingProperties(pcl::visualization::PCL_VISUALIZER_REPRESENTATION, pcl::visualization::PCL_VISUALIZER_REPRESENTATION_WIREFRAME, "pole_"+std::to_string(poleIndex)+"rframe");
 
-        markerPos+=poleSpace;
+        markerPos += poleSpace;
         poleIndex++;
     }
 

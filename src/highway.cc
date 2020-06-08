@@ -7,6 +7,7 @@
  *
  **********************************************************/
 #include "highway.h"
+#include "glog/logging.h"
 
 
 Highway::Highway(pcl::visualization::PCLVisualizer::Ptr& viewer)
@@ -69,7 +70,7 @@ Highway::Highway(pcl::visualization::PCLVisualizer::Ptr& viewer)
 
     lidar = new Lidar(traffic,0);
     // render environment
-    renderHighway(0,viewer);
+    renderHighway(0, viewer);
     egoCar.render(viewer);
     car1.render(viewer);
     car2.render(viewer);
@@ -92,6 +93,7 @@ void Highway::stepHighway(
     egoCar.render(viewer);
 
     for (int i = 0; i < traffic.size(); i++) {
+        LOG(INFO) << "Traffic " << i << "------";
         traffic[i].move((double)1/frame_per_sec, timestamp);
         if( !visualize_pcd ) {
             traffic[i].render(viewer);
@@ -115,10 +117,10 @@ void Highway::stepHighway(
     }
     viewer->addText("Accuracy - RMSE:", 30, 300, 20, 1, 1, 1, "rmse");
     VectorXd rmse = tools.CalculateRMSE(tools.estimations, tools.ground_truth);
-    viewer->addText(" X: "+std::to_string(rmse[0]), 30, 275, 20, 1, 1, 1, "rmse_x");
-    viewer->addText(" Y: "+std::to_string(rmse[1]), 30, 250, 20, 1, 1, 1, "rmse_y");
-    viewer->addText("Vx: " +std::to_string(rmse[2]), 30, 225, 20, 1, 1, 1, "rmse_vx");
-    viewer->addText("Vy: " +std::to_string(rmse[3]), 30, 200, 20, 1, 1, 1, "rmse_vy");
+    viewer->addText(" X: " + std::to_string(rmse[0]), 30, 275, 20, 1, 1, 1, "rmse_x");
+    viewer->addText(" Y: " + std::to_string(rmse[1]), 30, 250, 20, 1, 1, 1, "rmse_y");
+    viewer->addText("Vx: " + std::to_string(rmse[2]), 30, 225, 20, 1, 1, 1, "rmse_vx");
+    viewer->addText("Vy: " + std::to_string(rmse[3]), 30, 200, 20, 1, 1, 1, "rmse_vy");
 
     if (timestamp > 1.0e6) {
         if(rmse[0] > rmseThreshold[0]) {

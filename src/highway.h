@@ -15,7 +15,6 @@ public:
     std::vector<double> rmseThreshold = {0.30, 0.16, 0.95, 0.70};
     std::vector<double> rmseFailLog = {0.0, 0.0, 0.0, 0.0};
     Lidar* lidar;
-
     // Parameters
     // --------------------------------
     // Set which cars to track with UKF
@@ -27,10 +26,9 @@ public:
     // Predict path in the future using UKF
     double projectedTime = 0;
     int projectedSteps = 0;
+
     // --------------------------------
-
     explicit Highway(pcl::visualization::PCLVisualizer::Ptr& viewer);
-
     void stepHighway(double egoVelocity, long long timestamp, int frame_per_sec, pcl::visualization::PCLVisualizer::Ptr& viewer);
 };
 
